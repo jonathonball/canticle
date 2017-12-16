@@ -1,0 +1,13 @@
+{
+  "name": "canticle",
+  "version": "0.0.1",
+  "description": "command line youtube playlist manager",
+  "main": "index.js",
+  "author": "Jonathon Ball",
+  "dependencies": {
+    "blessed": ">=0.1.81",
+    "fifo-js": ">=2.1.0",
+    "youtube-dl": "1.12.2",
+    "mplayer": "2.1.0"
+  }
+}

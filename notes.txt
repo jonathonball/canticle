@@ -1,0 +1,6 @@
+https://www.npmjs.com/package/mplayer
+https://www.npmjs.com/package/youtube-dl
+https://www.npmjs.com/package/blessed#box-from-element
+https://docs.npmjs.com/files/package.json
+
+still need something for searching youtube.  maybe.
