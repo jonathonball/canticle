@@ -36,7 +36,7 @@ var message_bar = blessed.box({
   }
 });
 
-var alert_box = blessed.box({
+var alertBox = blessed.box({
     name: null,
 	top: 'center',
 	left: 'center',
@@ -63,25 +63,22 @@ function quitConfirmVisible() {
 
 function resetAlertBox() {
     screen.log('tried to resetAlertBox');
-    alert_box.name = 'alert_box';
-    alert_box.content = '';
-    alert_box.detach();
+    alertBox.name = 'alertBox';
+    alertBox.content = '';
+    alertBox.detach();
     screen.render();
 }
 
 function showAlertBox(name, message) {
-    alert_box.name = name;
-    alert_box.content = message;
-    screen.append(alert_box);
-    alert_box.focus();
+    alertBox.name = name;
+    alertBox.content = message;
+    screen.append(alertBox);
+    alertBox.focus();
     screen.render();
 }
 
 // Quit on Escape, q, or Control-C.
 screen.key(['escape', 'q'], function(ch, key) {
-    screen.log('user tried to escape');
-    screen.log(ch);
-    screen.log(key);
     if (quitConfirmVisible() && key.name == 'escape') {
         resetAlertBox();
     } else if (!quitConfirmVisible()) {
@@ -94,8 +91,6 @@ screen.key(['Y', 'y'], function(ch, key) {
         screen.destroy();
     }
 });
-
-
 
 // Quit on Escape, q, or Control-C.
 screen.key(['C-c'], function(ch, key) {
