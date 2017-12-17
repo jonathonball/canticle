@@ -15,9 +15,9 @@ var screen = blessed.screen({
 screen.title = 'Canticle';
 
 // Create a box perfectly centered horizontally and vertically.
-var message_bar = blessed.box({
+var messageBar = blessed.box({
   parent: screen,
-  name: 'message_bar',
+  name: 'messageBar',
   bottom: 0,
   left: 'center',
   width: '100%',
@@ -54,8 +54,6 @@ var alertBox = blessed.box({
 		}
 	}
 });
-//quitbox.name = 'test';
-//screen.append(box);
 
 function quitConfirmVisible() {
     return screen.children.filter(({name}) => name == 'quit_confirm').length >= 1;
