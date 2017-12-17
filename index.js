@@ -99,9 +99,6 @@ screen.key(['C-c'], function(ch, key) {
 
 screen.key('enter', function(ch, key) {
 	screen.log('user pressed enter');
-	screen.children.forEach(function(child) {
-		screen.log(child.name);
-	});
 });
 
 screen.render();
