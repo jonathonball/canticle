@@ -20,7 +20,6 @@ var screen = blessed.screen({
 
 screen.title = 'Canticle';
 
-// Create a box perfectly centered horizontally and vertically.
 var messageBar = blessed.box({
     parent: screen,
     name: 'messageBar',
@@ -48,7 +47,6 @@ var playlistManager = blessed.list({
     right: 1,
     width: '50%',
     height: '50%',
-    //content: 'playlistManager goes here',
     interactive: true,
     border: {
         type: 'line'
@@ -75,21 +73,21 @@ var playlist = blessed.list({
 
 var alertBox = blessed.box({
     name: null,
-	top: 'center',
-	left: 'center',
-	width: 25,
-	height: 'shrink',
-	tags: true,
+    top: 'center',
+    left: 'center',
+    width: 25,
+    height: 'shrink',
+    tags: true,
     border: {
-		type: 'line'
-	},
-	style: {
-		fg: 'white',
-		bg: 'black',
-		border: {
-			fg: 'white'
-		}
-	}
+        type: 'line'
+    },
+    style: {
+        fg: 'white',
+        bg: 'black',
+        border: {
+            fg: 'white'
+        }
+    }
 });
 
 function quitConfirmVisible() {
@@ -101,7 +99,6 @@ function playlistVisible() {
 }
 
 function resetAlertBox() {
-    screen.log('tried to resetAlertBox');
     alertBox.name = 'alertBox';
     alertBox.content = '';
     alertBox.detach();
@@ -109,7 +106,6 @@ function resetAlertBox() {
 }
 
 function resetPlaylist() {
-    screen.log('tried to reset playlist');
     playlist.clearItems();
     playlist.detach();
     playlistManager.focus();
@@ -124,7 +120,6 @@ function showAlertBox(name, message) {
     screen.render();
 }
 
-// Quit on Escape, q, or Control-C.
 screen.key(['escape', 'q'], function(ch, key) {
     if (quitConfirmVisible() && key.name == 'escape') {
         resetAlertBox();
@@ -143,7 +138,6 @@ screen.key(['Y', 'y'], function(ch, key) {
     }
 });
 
-// Quit on Escape, q, or Control-C.
 screen.key(['C-c'], function(ch, key) {
     return process.exit(0);
 });
@@ -158,7 +152,6 @@ screen.key(['space'], function(ch, key) {
     let track = playlists[selectedPlaylist].tracks[selectedTrack];
     youtube.getInfo([track.url], function(err, info) {
         if (err) throw err;
-    	console.log('inside getInfo');
     	let audioStreams = info.formats.filter(({vcodec}) => vcodec == 'none');
     	console.log('found ' + audioStreams.length + ' audio streams');
     	player.openFile(audioStreams[0].url);
@@ -168,7 +161,6 @@ screen.key(['space'], function(ch, key) {
 });
 
 playlistManager.on('attach', function() {
-    screen.log('plm was attached to screen');
     playlists.forEach(function(playlist) {
         playlistManager.add(playlist.name);
     });
@@ -178,18 +170,12 @@ playlistManager.on('attach', function() {
 
 playlistManager.on('select', function(unknown, index) {
     let playlistName = playlists[index].name;
-    screen.log('plm: selection made : ' + playlistName);
-//    playlistManager.detach();
     selectedPlaylist = index;
     screen.append(playlist);
 });
 
 playlist.on('attach', function() {
-    screen.log('playlist was attached to screen');
-    screen.log('current selection: ' + selectedPlaylist);
     playlists[selectedPlaylist].tracks.forEach(function(track) {
-        screen.log('title: ' + track.title);
-        screen.log('url: ' + track.url);
         playlist.add(track.title);
     });
     playlist.focus();
@@ -198,7 +184,6 @@ playlist.on('attach', function() {
 
 playlist.on('select', function(unknown, index) {
     selectedTrack = index;
-    screen.log('user selected track');
     messageBar.content = playlists[selectedPlaylist].tracks[selectedTrack].title;
     player.pause();
     screen.render();
