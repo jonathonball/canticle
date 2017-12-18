@@ -7,7 +7,6 @@ var playlists = config.get('playlists');
 var player = new MPlayer();
 var selectedPlaylist = 0;
 var selectedTrack = 0;
-
 var playerStatus = {};
 
 process.name = 'Canticle';
@@ -29,11 +28,12 @@ var messageBar = blessed.box({
     left: 'center',
     width: '100%',
     height: 'shrink',
-    content: 'Hello {bold}world{/bold}!',
+    align: 'center',
+    content: 'Welcome to canticle',
     tags: true,
     style: {
-        fg: 'white',
-        bg: 'black',
+        fg: '#ffffff',
+        bg: '#000000',
         border: {
             fg: '#f0f0f0'
         },
@@ -53,6 +53,7 @@ var playlistManager = blessed.list({
     border: {
         type: 'line'
     },
+    bg: '#000000',
     selectedBg: 'red',
     mouse: true,
     keys: true
@@ -111,9 +112,11 @@ var loadingBox = blessed.box({
     }
 });
 
-function childIsVisible(childName) {
-    return screen.children.filter(({name}) => name == childName).length >= 1;
-}
+/**
+ * @param string childName
+ * @return boolean
+ */
+var childIsVisible = (childName) => screen.children.filter(({name}) => name == childName).length >= 1;
 
 function showLoadingBox() {
     if (! childIsVisible('loadingBox')) {
@@ -150,22 +153,21 @@ function showAlertBox(name, message) {
     screen.render();
 }
 
-/*
 function setPlayerTrack() {
+    screen.append(loadingBox);
+    screen.render();
     let track = playlists[selectedPlaylist].tracks[selectedTrack];
-    console.log(track.title);
-    console.log(track.url);
     youtube.getInfo([track.url], function(err, info) {
         if (err) throw err;
         let audioStreams = info.formats.filter(({vcodec}) => vcodec == 'none');
-        console.log('found ' + audioStreams.length + ' audio streams');
-        console.log(audioStreams[0].url);
-
+        player.openFile(audioStreams[0].url);
         messageBar.content = playlists[selectedPlaylist].tracks[selectedTrack].title;
+        playlist.select(selectedTrack);
+        loadingBox.detach();
         screen.render();
     });
 }
-*/
+
 screen.key(['escape', 'q'], function(ch, key) {
     if (childIsVisible('quit_confirm') && key.name == 'escape') {
         resetAlertBox();
@@ -194,7 +196,11 @@ screen.key(['P', 'p'], function(ch, key) {
 });
 
 screen.key(['space'], function(ch, key) {
-
+    if (playerStatus.playing) {
+        player.pause();
+    } else {
+        player.play();
+    }
 });
 
 playlistManager.on('attach', function() {
@@ -219,11 +225,24 @@ playlist.on('attach', function() {
     });
     playlist.select(selectedTrack);
     playlist.focus();
+    setPlayerTrack();
     screen.render();
 });
 
 playlist.on('select', function(unknown, index) {
     screen.log
+});
+
+player.on('status', function(info) {
+    playerStatus = info;
+});
+
+player.on('stop', function(exitCode) {
+    selectedTrack++;
+    if (selectedTrack >= playlists[selectedPlaylist].tracks.length) {
+        selectedTrack = 0;
+    }
+    setPlayerTrack();
 });
 
 screen.render();
