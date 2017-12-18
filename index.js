@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 const youtube = require('youtube-dl');
-
+const MPlayer = require('mplayer');
 const blessed = require('blessed');
 var config = require('config');
 var playlists = config.get('playlists');
+var player = new MPlayer();
 var selectedPlaylist = 0;
 var selectedTrack = 0;
-
 
 var playerStatus = {};
 
@@ -122,6 +122,22 @@ function showAlertBox(name, message) {
     screen.render();
 }
 
+/*
+function setPlayerTrack() {
+    let track = playlists[selectedPlaylist].tracks[selectedTrack];
+    console.log(track.title);
+    console.log(track.url);
+    youtube.getInfo([track.url], function(err, info) {
+        if (err) throw err;
+        let audioStreams = info.formats.filter(({vcodec}) => vcodec == 'none');
+        console.log('found ' + audioStreams.length + ' audio streams');
+        console.log(audioStreams[0].url);
+
+        messageBar.content = playlists[selectedPlaylist].tracks[selectedTrack].title;
+        screen.render();
+    });
+}
+*/
 screen.key(['escape', 'q'], function(ch, key) {
     if (quitConfirmVisible() && key.name == 'escape') {
         resetAlertBox();
@@ -135,7 +151,6 @@ screen.key(['escape', 'q'], function(ch, key) {
 screen.key(['Y', 'y'], function(ch, key) {
     if (quitConfirmVisible()) {
         screen.destroy();
-
         process.exit(0);
     }
 });
@@ -163,8 +178,10 @@ playlistManager.on('attach', function() {
 });
 
 playlistManager.on('select', function(unknown, index) {
-    let playlistName = playlists[index].name;
     selectedPlaylist = index;
+    selectedTrack = 0;
+    let playlistName = playlists[index].name;
+    screen.log('playlistManager: user selected playlist titled ' + playlistName);
     screen.append(playlist);
 });
 
@@ -172,21 +189,13 @@ playlist.on('attach', function() {
     playlists[selectedPlaylist].tracks.forEach(function(track) {
         playlist.add(track.title);
     });
+    playlist.select(selectedTrack);
     playlist.focus();
     screen.render();
 });
 
 playlist.on('select', function(unknown, index) {
-    selectedTrack = index;
-    let track = playlists[selectedPlaylist].tracks[selectedTrack];
-    youtube.getInfo([track.url], function(err, info) {
-        if (err) throw err;
-        let audioStreams = info.formats.filter(({vcodec}) => vcodec == 'none');
-        console.log('found ' + audioStreams.length + ' audio streams');
-
-        messageBar.content = playlists[selectedPlaylist].tracks[selectedTrack].title;
-        screen.render();
-    });
+    screen.log
 });
 
 screen.render();
