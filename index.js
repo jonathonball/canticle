@@ -4,6 +4,7 @@ const mplayer = require('mplayer');
 const blessed = require('blessed');
 var config = require('config');
 var playlists = config.get('playlists');
+var selectedPlaylist = 0;
 
 process.name = 'Canticle';
 
@@ -41,25 +42,33 @@ var messageBar = blessed.box({
 
 var playlistManager = blessed.list({
     name: 'playlistManager',
+    top: 1,
+    right: 1,
+    width: '50%',
+    height: '50%',
+    //content: 'playlistManager goes here',
+    interactive: true,
+    border: {
+        type: 'line'
+    },
+    selectedBg: 'red',
+    mouse: true,
+    keys: true
+});
+
+var playlist = blessed.list({
+    name: null,
     top: 0,
     right: 0,
     width: '50%',
     height: '50%',
-    content: 'playlistManager goes here',
-    tags: true,
+    interactive: true,
     border: {
         type: 'line'
     },
-    style: {
-        fg: 'white',
-        bg: 'black',
-        border: {
-            fg: '#f0f0f0'
-        },
-        hover: {
-            bg: 'green'
-        }
-    }
+    selectedBg: 'red',
+    mouse: true,
+    keys: true
 });
 
 var alertBox = blessed.box({
@@ -121,24 +130,33 @@ screen.key(['C-c'], function(ch, key) {
   return process.exit(0);
 });
 
-screen.key('enter', function(ch, key) {
-	screen.log('user pressed enter');
-    /*
-    let playlists = config.get('playlists');
-    playlists.forEach(function(playlist) {
-        playlist.tracks.forEach(function(track) {
-            screen.log(track.title);
-        });
-    });
-    */
-});
-
 playlistManager.on('attach', function() {
     screen.log('plm was attached to screen');
-
+    playlists.forEach(function(playlist) {
+        playlistManager.add(playlist.name);
+    });
+    playlistManager.focus();
     screen.render();
 });
 
+playlistManager.on('select', function(unknown, index) {
+    let playlistName = playlists[index].name;
+    screen.log('plm: selection made : ' + playlistName);
+//    playlistManager.detach();
+    selectedPlaylist = index;
+    screen.append(playlist);
+});
+
+playlist.on('attach', function() {
+    screen.log('playlist was attached to screen');
+    screen.log('current selection: ' + selectedPlaylist);
+    playlists[selectedPlaylist].tracks.forEach(function(track) {
+        screen.log('title: ' + track.title);
+        screen.log('url: ' + track.url);
+        playlist.add(track.title);
+    });
+    screen.render();
+});
 
 screen.render();
 screen.append(playlistManager);
