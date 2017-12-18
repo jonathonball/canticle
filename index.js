@@ -57,7 +57,7 @@ var playlistManager = blessed.list({
 });
 
 var playlist = blessed.list({
-    name: null,
+    name: 'playlist',
     top: 0,
     right: 0,
     width: '50%',
@@ -94,11 +94,23 @@ function quitConfirmVisible() {
     return screen.children.filter(({name}) => name == 'quit_confirm').length >= 1;
 }
 
+function playlistVisible() {
+    return screen.children.filter(({name}) => name == 'playlist').length >= 1;
+}
+
 function resetAlertBox() {
     screen.log('tried to resetAlertBox');
     alertBox.name = 'alertBox';
     alertBox.content = '';
     alertBox.detach();
+    screen.render();
+}
+
+function resetPlaylist() {
+    screen.log('tried to reset playlist');
+    playlist.clearItems();
+    playlist.detach();
+    playlistManager.focus();
     screen.render();
 }
 
@@ -127,7 +139,13 @@ screen.key(['Y', 'y'], function(ch, key) {
 
 // Quit on Escape, q, or Control-C.
 screen.key(['C-c'], function(ch, key) {
-  return process.exit(0);
+    return process.exit(0);
+});
+
+screen.key(['P', 'p'], function(ch, key) {
+    if (playlistVisible()) {
+        resetPlaylist();
+    }
 });
 
 playlistManager.on('attach', function() {
@@ -155,6 +173,7 @@ playlist.on('attach', function() {
         screen.log('url: ' + track.url);
         playlist.add(track.title);
     });
+    playlist.focus();
     screen.render();
 });
 
