@@ -9,7 +9,7 @@ var selectedPlaylist = 0;
 var selectedTrack = 0;
 var playerStatus = {};
 
-process.name = 'Canticle';
+process.name = 'canticle';
 
 var screen = blessed.screen({
   smartCSR: true,
@@ -19,7 +19,7 @@ var screen = blessed.screen({
   ignoreDockContrast: true
 });
 
-screen.title = 'Canticle';
+screen.title = 'canticle';
 
 var messageBar = blessed.box({
     parent: screen,
@@ -174,7 +174,7 @@ screen.key(['escape', 'q'], function(ch, key) {
         return;
     }
     if ( ! childIsVisible('quit_confirm')) {
-        showAlertBox('quit_confirm', "{center}  Quit Canticle?\n  Y or y to quit{/center}");
+        showAlertBox('quit_confirm', "{center}  Quit canticle?\n  Y or y to quit{/center}");
     }
 });
 
