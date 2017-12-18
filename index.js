@@ -8,6 +8,8 @@ var selectedPlaylist = 0;
 var selectedTrack = 0;
 var player = new MPlayer();
 
+var playerStatus = {};
+
 process.name = 'Canticle';
 
 var screen = blessed.screen({
@@ -149,15 +151,11 @@ screen.key(['P', 'p'], function(ch, key) {
 });
 
 screen.key(['space'], function(ch, key) {
-    let track = playlists[selectedPlaylist].tracks[selectedTrack];
-    youtube.getInfo([track.url], function(err, info) {
-        if (err) throw err;
-    	let audioStreams = info.formats.filter(({vcodec}) => vcodec == 'none');
-    	console.log('found ' + audioStreams.length + ' audio streams');
-    	player.openFile(audioStreams[0].url);
-    	player.play();
-    });
-
+    if(playerStatus.playing) {
+        player.pause();
+    } else {
+        player.play();
+    }
 });
 
 playlistManager.on('attach', function() {
@@ -184,9 +182,23 @@ playlist.on('attach', function() {
 
 playlist.on('select', function(unknown, index) {
     selectedTrack = index;
-    messageBar.content = playlists[selectedPlaylist].tracks[selectedTrack].title;
-    player.pause();
-    screen.render();
+    let track = playlists[selectedPlaylist].tracks[selectedTrack];
+    youtube.getInfo([track.url], function(err, info) {
+        if (err) throw err;
+        let audioStreams = info.formats.filter(({vcodec}) => vcodec == 'none');
+        console.log('found ' + audioStreams.length + ' audio streams');
+        player.openFile(audioStreams[0].url, { pause: true });
+        messageBar.content = playlists[selectedPlaylist].tracks[selectedTrack].title;
+        screen.render();
+    });
+});
+
+player.on('status', function(status) {
+    playerStatus = status;
+});
+
+player.on('stop', function(exitCode) {
+    console.log('player stopped');
 });
 
 screen.render();
