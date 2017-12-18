@@ -7,8 +7,14 @@ var playlists = config.get('playlists');
 var player = new MPlayer();
 var selectedPlaylist = 0;
 var selectedTrack = 0;
+var selectedTrackDuration = 0;
 var playerStatus = {};
+var nextTrack = null;
+var playerHardStop = false;
 
+player.setOptions({
+    debug: true,
+});
 process.name = 'canticle';
 
 var screen = blessed.screen({
@@ -153,7 +159,12 @@ function showAlertBox(name, message) {
     screen.render();
 }
 
+function fmtMSS(s) {
+    return (s-(s%=60))/60+(9<s?':':':0')+s
+}
+
 function setPlayerTrack() {
+    console.log('entered setPlayerTrack');
     screen.append(loadingBox);
     screen.render();
     let track = playlists[selectedPlaylist].tracks[selectedTrack];
@@ -162,8 +173,14 @@ function setPlayerTrack() {
         let audioStreams = info.formats.filter(({vcodec}) => vcodec == 'none');
         player.openFile(audioStreams[0].url);
         messageBar.content = playlists[selectedPlaylist].tracks[selectedTrack].title;
+        selectedTrackDuration = info.duration;
         playlist.select(selectedTrack);
         loadingBox.detach();
+        if (audioStreams[0].url) {
+            console.log(audioStreams[0].url);
+        } else {
+            console.log('failed to load url for song');
+        }
         screen.render();
     });
 }
@@ -213,7 +230,6 @@ playlistManager.on('attach', function() {
 
 playlistManager.on('select', function(unknown, index) {
     selectedPlaylist = index;
-    selectedTrack = 0;
     let playlistName = playlists[index].name;
     screen.log('playlistManager: user selected playlist titled ' + playlistName);
     screen.append(playlist);
@@ -223,26 +239,53 @@ playlist.on('attach', function() {
     playlists[selectedPlaylist].tracks.forEach(function(track) {
         playlist.add(track.title);
     });
-    playlist.select(selectedTrack);
+    selectedTrack = 0;
+    playerHardStop = true;
+    player.stop();
+    playlist.select(0);
     playlist.focus();
-    setPlayerTrack();
+    
     screen.render();
 });
 
 playlist.on('select', function(unknown, index) {
-    screen.log
+    nextTrack = index;
+    playerHardStop = true;
+    setPlayerTrack();
 });
 
 player.on('status', function(info) {
     playerStatus = info;
+    //console.log(info);
 });
 
 player.on('stop', function(exitCode) {
-    selectedTrack++;
-    if (selectedTrack >= playlists[selectedPlaylist].tracks.length) {
-        selectedTrack = 0;
+    if (! playerHardStop) {
+        if (nextTrack !== null) {
+            selectedTrack = nextTrack;
+        } else {
+            selectedTrack++;
+            if (selectedTrack >= playlists[selectedPlaylist].tracks.length) {
+                selectedTrack = 0;
+            }
+        }
+        setPlayerTrack();
+        nextTrack = null;
+    } else {
+        playerHardStop = false;
     }
-    setPlayerTrack();
+});
+
+player.on('time', function(timeIndex) {
+    if (playerStatus.playing && parseInt(timeIndex) == timeIndex) {
+        messageBar.content = playlists[selectedPlaylist].tracks[selectedTrack].title + " [" + fmtMSS(parseInt(timeIndex)) + "/" + selectedTrackDuration + "]";
+        screen.render();
+    }
+});
+
+player.on('error', function(e) {
+    screen.log(e);
+    proceess.exit(1);
 });
 
 screen.render();
