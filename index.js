@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 const youtube = require('youtube-dl');
-const mplayer = require('mplayer');
+const MPlayer = require('mplayer');
 const blessed = require('blessed');
 var config = require('config');
 var playlists = config.get('playlists');
 var selectedPlaylist = 0;
+var selectedTrack = 0;
+var player = new MPlayer();
 
 process.name = 'Canticle';
 
@@ -126,7 +128,9 @@ function showAlertBox(name, message) {
 screen.key(['escape', 'q'], function(ch, key) {
     if (quitConfirmVisible() && key.name == 'escape') {
         resetAlertBox();
-    } else if (!quitConfirmVisible()) {
+        return;
+    }
+    if ( ! quitConfirmVisible()) {
         showAlertBox('quit_confirm', "{center}  Quit Canticle?\n  Y or y to quit{/center}");
     }
 });
@@ -134,6 +138,8 @@ screen.key(['escape', 'q'], function(ch, key) {
 screen.key(['Y', 'y'], function(ch, key) {
     if (quitConfirmVisible()) {
         screen.destroy();
+        player.stop();
+        process.exit(0);
     }
 });
 
@@ -146,6 +152,19 @@ screen.key(['P', 'p'], function(ch, key) {
     if (playlistVisible()) {
         resetPlaylist();
     }
+});
+
+screen.key(['space'], function(ch, key) {
+    let track = playlists[selectedPlaylist].tracks[selectedTrack];
+    youtube.getInfo([track.url], function(err, info) {
+        if (err) throw err;
+    	console.log('inside getInfo');
+    	let audioStreams = info.formats.filter(({vcodec}) => vcodec == 'none');
+    	console.log('found ' + audioStreams.length + ' audio streams');
+    	player.openFile(audioStreams[0].url);
+    	player.play();
+    });
+
 });
 
 playlistManager.on('attach', function() {
@@ -175,6 +194,12 @@ playlist.on('attach', function() {
     });
     playlist.focus();
     screen.render();
+});
+
+playlist.on('select', function(unknown, index) {
+    selectedTrack = index;
+    screen.log('user selected track');
+    player.pause();
 });
 
 screen.render();
