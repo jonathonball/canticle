@@ -92,12 +92,40 @@ var alertBox = blessed.box({
     }
 });
 
-function quitConfirmVisible() {
-    return screen.children.filter(({name}) => name == 'quit_confirm').length >= 1;
+var loadingBox = blessed.box({
+    name: 'loadingBox',
+    bottom: 3,
+    left: 0,
+    width: '25%',
+    height: 'shrink',
+    content: "Loading..",
+    border: {
+        type: 'line'
+    },
+    style: {
+        fg: 'orange',
+        bg: 'black',
+        border: {
+            fg: 'green'
+        }
+    }
+});
+
+function childIsVisible(childName) {
+    return screen.children.filter(({name}) => name == childName).length >= 1;
 }
 
-function playlistVisible() {
-    return screen.children.filter(({name}) => name == 'playlist').length >= 1;
+function showLoadingBox() {
+    if (! childIsVisible('loadingBox')) {
+        screen.append(loadingBox);
+        screen.render();
+    }
+}
+
+function resetLoadingBox() {
+    if (childIsVisible('loadingBox')) {
+        loadingBox.detach();
+    }
 }
 
 function resetAlertBox() {
@@ -139,17 +167,17 @@ function setPlayerTrack() {
 }
 */
 screen.key(['escape', 'q'], function(ch, key) {
-    if (quitConfirmVisible() && key.name == 'escape') {
+    if (childIsVisible('quit_confirm') && key.name == 'escape') {
         resetAlertBox();
         return;
     }
-    if ( ! quitConfirmVisible()) {
+    if ( ! childIsVisible('quit_confirm')) {
         showAlertBox('quit_confirm', "{center}  Quit Canticle?\n  Y or y to quit{/center}");
     }
 });
 
 screen.key(['Y', 'y'], function(ch, key) {
-    if (quitConfirmVisible()) {
+    if (childIsVisible('quit_confirm')) {
         screen.destroy();
         process.exit(0);
     }
@@ -160,7 +188,7 @@ screen.key(['C-c'], function(ch, key) {
 });
 
 screen.key(['P', 'p'], function(ch, key) {
-    if (playlistVisible()) {
+    if (childIsVisible('playlist')) {
         resetPlaylist();
     }
 });
