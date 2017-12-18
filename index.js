@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 const youtube = require('youtube-dl');
-const MPlayer = require('mplayer');
+
 const blessed = require('blessed');
 var config = require('config');
 var playlists = config.get('playlists');
 var selectedPlaylist = 0;
 var selectedTrack = 0;
-var player = new MPlayer();
+
 
 var playerStatus = {};
 
@@ -135,7 +135,7 @@ screen.key(['escape', 'q'], function(ch, key) {
 screen.key(['Y', 'y'], function(ch, key) {
     if (quitConfirmVisible()) {
         screen.destroy();
-        player.stop();
+
         process.exit(0);
     }
 });
@@ -151,11 +151,7 @@ screen.key(['P', 'p'], function(ch, key) {
 });
 
 screen.key(['space'], function(ch, key) {
-    if(playerStatus.playing) {
-        player.pause();
-    } else {
-        player.play();
-    }
+
 });
 
 playlistManager.on('attach', function() {
@@ -187,18 +183,10 @@ playlist.on('select', function(unknown, index) {
         if (err) throw err;
         let audioStreams = info.formats.filter(({vcodec}) => vcodec == 'none');
         console.log('found ' + audioStreams.length + ' audio streams');
-        player.openFile(audioStreams[0].url, { pause: true });
+
         messageBar.content = playlists[selectedPlaylist].tracks[selectedTrack].title;
         screen.render();
     });
-});
-
-player.on('status', function(status) {
-    playerStatus = status;
-});
-
-player.on('stop', function(exitCode) {
-    console.log('player stopped');
 });
 
 screen.render();
