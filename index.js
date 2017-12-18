@@ -199,7 +199,9 @@ playlist.on('attach', function() {
 playlist.on('select', function(unknown, index) {
     selectedTrack = index;
     screen.log('user selected track');
+    messageBar.content = playlists[selectedPlaylist].tracks[selectedTrack].title;
     player.pause();
+    screen.render();
 });
 
 screen.render();
