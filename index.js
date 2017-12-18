@@ -2,6 +2,9 @@
 const youtube = require('youtube-dl');
 const mplayer = require('mplayer');
 const blessed = require('blessed');
+var config = require('config');
+var playlists = config.get('playlists');
+
 process.name = 'Canticle';
 
 var screen = blessed.screen({
@@ -16,24 +19,47 @@ screen.title = 'Canticle';
 
 // Create a box perfectly centered horizontally and vertically.
 var messageBar = blessed.box({
-  parent: screen,
-  name: 'messageBar',
-  bottom: 0,
-  left: 'center',
-  width: '100%',
-  height: 'shrink',
-  content: 'Hello {bold}world{/bold}!',
-  tags: true,
-  style: {
-    fg: 'white',
-    bg: 'black',
-    border: {
-      fg: '#f0f0f0'
-    },
-    hover: {
-      bg: 'green'
+    parent: screen,
+    name: 'messageBar',
+    bottom: 0,
+    left: 'center',
+    width: '100%',
+    height: 'shrink',
+    content: 'Hello {bold}world{/bold}!',
+    tags: true,
+    style: {
+        fg: 'white',
+        bg: 'black',
+        border: {
+            fg: '#f0f0f0'
+        },
+        hover: {
+            bg: 'green'
+        }
     }
-  }
+});
+
+var playlistManager = blessed.list({
+    name: 'playlistManager',
+    top: 0,
+    right: 0,
+    width: '50%',
+    height: '50%',
+    content: 'playlistManager goes here',
+    tags: true,
+    border: {
+        type: 'line'
+    },
+    style: {
+        fg: 'white',
+        bg: 'black',
+        border: {
+            fg: '#f0f0f0'
+        },
+        hover: {
+            bg: 'green'
+        }
+    }
 });
 
 var alertBox = blessed.box({
@@ -80,7 +106,7 @@ screen.key(['escape', 'q'], function(ch, key) {
     if (quitConfirmVisible() && key.name == 'escape') {
         resetAlertBox();
     } else if (!quitConfirmVisible()) {
-        showAlertBox('quit_confirm', "{center}Quit Canticle?{/center}");
+        showAlertBox('quit_confirm', "{center}  Quit Canticle?\n  Y or y to quit{/center}");
     }
 });
 
@@ -97,6 +123,22 @@ screen.key(['C-c'], function(ch, key) {
 
 screen.key('enter', function(ch, key) {
 	screen.log('user pressed enter');
+    /*
+    let playlists = config.get('playlists');
+    playlists.forEach(function(playlist) {
+        playlist.tracks.forEach(function(track) {
+            screen.log(track.title);
+        });
+    });
+    */
 });
 
+playlistManager.on('attach', function() {
+    screen.log('plm was attached to screen');
+
+    screen.render();
+});
+
+
 screen.render();
+screen.append(playlistManager);
