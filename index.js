@@ -72,13 +72,16 @@ playlist.on('attach', function() {
 
 playlist.on('select', function(unknown, index) {
     userAction = true;
+    playlist.disable();
     player.stop();
     screen.append(loading);
     playlist.getRealYoutubeUrl(playlists[selectedPlaylist].tracks[index]).then(function(streamData) {
         loading.detach();
         player.openFile(streamData.realUrl);
-        screen.render();
         userAction = false;
+        playlist.enable();
+        playlist.select(index);
+        screen.render();
     }, function (err) {
         throw err;
     });
@@ -92,6 +95,7 @@ player.on('stop', function(unknown){
     }
     screen.render();
 });
+
 screen.append(messageBar);
 screen.append(playlistManager);
 screen.render();
