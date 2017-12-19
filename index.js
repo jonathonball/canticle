@@ -7,6 +7,8 @@ const MPlayer = require('mplayer');
 const config = require('config');
 
 var playlists = config.get('playlists');
+var selectedPlaylist = 0;
+var selectedTrack = 0;
 
 var screen = blessed.screen({
   smartCSR: true,
@@ -39,7 +41,15 @@ playlistManager.on('attach', function() {
 });
 
 playlistManager.on('select', function(unknown, index) {
-    console.log(index);
+    selectedPlaylist = index;
+    screen.append(playlist);
+    playlistManager.disable();
+    screen.render();
+});
+
+playlist.on('attach', function() {
+    selectedTrack = 0;
+    playlist.attachPlaylist(playlists[selectedPlaylist]);
 });
 
 screen.append(messageBar);
