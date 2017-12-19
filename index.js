@@ -72,6 +72,7 @@ playlist.on('attach', function() {
 
 playlist.on('select', function(unknown, index) {
     userAction = true;
+    selectedTrack = index;
     playlist.disable();
     player.stop();
     screen.append(loading);
@@ -92,6 +93,21 @@ player.on('stop', function(unknown){
         console.log('playback ended because of user actions');
     } else {
         console.log('playback ended naturally');
+        selectedTrack++;
+        if (selectedTrack >= playlists[selectedPlaylist].tracks.length) {
+            selectedTrack = 0;
+        }
+        playlist.disable();
+        screen.append(loading);
+        playlist.getRealYoutubeUrl(playlists[selectedPlaylist].tracks[selectedTrack]).then(function(streamData) {
+            player.openFile(streamData.realUrl);
+            playlist.enable();
+            playlist.select(selectedTrack);
+            loading.detach();
+            screen.render();
+        }, function(err) {
+            throw err;
+        });
     }
     screen.render();
 });
