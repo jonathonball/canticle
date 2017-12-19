@@ -2,7 +2,6 @@
 process.name = 'canticle';
 
 const blessed = require('./lib/blessed-canticle');
-const youtube = require('youtube-dl');
 const MPlayer = require('mplayer');
 const config = require('config');
 
@@ -27,6 +26,7 @@ var messageBar = blessed.box(screen.templates.messageBar);
 var playlistManager = blessed.list(screen.templates.playlistManager);
 var playlist = blessed.list(screen.templates.playlist);
 var loading = blessed.box(screen.templates.loading);
+var debug = blessed.box(screen.templates.debug);
 
 screen.key(['C-c'], (ch, key) => {
     screen.destroy();
@@ -60,9 +60,9 @@ playlist.on('attach', function() {
     screen.append(loading);
     playlist.getRealYoutubeUrl(incomingPlaylist.tracks[selectedTrack]).then(function(streamData) {
         playlist.clearItems();
-        loading.detach();
         player.openFile(streamData.realUrl);
         playlist.attachPlaylist(incomingPlaylist);
+        loading.detach();
         screen.render();
         userAction = false;
     }, function(err) {
@@ -76,11 +76,11 @@ playlist.on('select', function(unknown, index) {
     player.stop();
     screen.append(loading);
     playlist.getRealYoutubeUrl(playlists[selectedPlaylist].tracks[index]).then(function(streamData) {
-        loading.detach();
         player.openFile(streamData.realUrl);
         userAction = false;
         playlist.enable();
         playlist.select(index);
+        loading.detach();
         screen.render();
     }, function (err) {
         throw err;
@@ -96,6 +96,7 @@ player.on('stop', function(unknown){
     screen.render();
 });
 
+screen.append(debug);
 screen.append(messageBar);
 screen.append(playlistManager);
 screen.render();
