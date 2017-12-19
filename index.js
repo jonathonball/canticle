@@ -15,7 +15,7 @@ var screen = blessed.screen({
   fullUnicode: true,
   dockBorders: true,
   ignoreDockContrast: true,
-  debug: true
+  debug: config.get('debug')
 });
 
 screen.title = 'canticle';
@@ -36,19 +36,11 @@ screen.key(['R', 'r'], (ch, key) => {
 screen.key(['P', 'p'], function(ch, key) { });
 
 playlistManager.on('attach', function() {
-    if (playlists.length) {
-        screen.log('Found playlists in config, adding to playlist manager');
-        playlists.forEach(function(playlist) {
-            screen.log('Adding playlist named ' + playlist.name);
-            playlistManager.addItem(playlist.name);
-        });
-        playlistManager.enable();
-    } else {
-        playlistManager.addItem('No playlists found');
-        playlistManager.interactive = false;
-    }
-    playlistManager.select(0);
-    playlistManager.focus();
+    playlistManager.attachPlaylistManager(playlists);
+});
+
+playlistManager.on('select', function(unknown, index) {
+    console.log(index);
 });
 
 screen.append(messageBar);
