@@ -5,7 +5,6 @@ const blessed = require('./lib/blessed-canticle');
 const youtube = require('youtube-dl');
 const MPlayer = require('mplayer');
 const config = require('config');
-const widgets = require('./lib/widgets');
 
 var playlists = config.get('playlists');
 
@@ -20,9 +19,9 @@ var screen = blessed.screen({
 
 screen.title = 'canticle';
 
-var messageBar = blessed.box(widgets.messageBar);
-var playlistManager = blessed.list(widgets.playlistManager);
-var playlist = blessed.list(widgets.playlist);
+var messageBar = blessed.box(screen.templates.messageBar);
+var playlistManager = blessed.list(screen.templates.playlistManager);
+var playlist = blessed.list(screen.templates.playlist);
 
 screen.key(['C-c'], (ch, key) => {
     screen.destroy();
