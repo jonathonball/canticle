@@ -24,6 +24,8 @@ screen.title = 'canticle';
 
 var messageBar = blessed.box(screen.templates.messageBar);
 var playlistManager = blessed.list(screen.templates.playlistManager);
+var playlistManagerControls = blessed.form(screen.templates.playlistManagerControls);
+var createPlaylistButton = blessed.button(screen.templates.createPlaylistButton);
 var playlist = blessed.list(screen.templates.playlist);
 var loading = blessed.box(screen.templates.loading);
 var debug = blessed.box(screen.templates.debug);
@@ -112,7 +114,10 @@ player.on('stop', function(unknown){
     screen.render();
 });
 
-screen.append(debug);
+//screen.append(debug);
 screen.append(messageBar);
 screen.append(playlistManager);
+//screen.append(playlistManagerControls);
+playlistManager.append(playlistManagerControls);
+playlistManagerControls.append(createPlaylistButton);
 screen.render();
