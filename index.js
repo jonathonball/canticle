@@ -9,19 +9,15 @@ var playlists = config.get('playlists');
 
 
 canticle.on('playlistManagerConsole', (userInput) => {
-    let inputArray = userInput.split(' ');
-    let cmd = inputArray.shift();
-    let params = inputArray.join(' ');
-    canticle.screen.log("cmd: " + cmd);
-    canticle.screen.log("params: " + params);
-    switch(cmd) {
+    switch (userInput.cmd) {
         case 'add':
-            break;
-        case 'remove':
+            canticle.screen.log('user adding');
+            canticle.screen.render();
             break;
         default:
-            canticle
+            canticle.playlistManagerLog.log(userInput.cmd + " command unknown");
     }
+
 });
 /*
 const blessed = require('./lib/blessed-canticle');
