@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 process.name = 'canticle';
 
+const Canticle = require('./lib/canticle');
+
+const canticle = new Canticle();
+
+/*
 const blessed = require('./lib/blessed-canticle');
 const MPlayer = require('mplayer');
 const config = require('config');
@@ -24,8 +29,6 @@ screen.title = 'canticle';
 
 var messageBar = blessed.box(screen.templates.messageBar);
 var playlistManager = blessed.list(screen.templates.playlistManager);
-var playlistManagerControls = blessed.form(screen.templates.playlistManagerControls);
-var createPlaylistButton = blessed.button(screen.templates.createPlaylistButton);
 var playlist = blessed.list(screen.templates.playlist);
 var loading = blessed.box(screen.templates.loading);
 var debug = blessed.box(screen.templates.debug);
@@ -118,6 +121,7 @@ player.on('stop', function(unknown){
 screen.append(messageBar);
 screen.append(playlistManager);
 //screen.append(playlistManagerControls);
-playlistManager.append(playlistManagerControls);
-playlistManagerControls.append(createPlaylistButton);
+//playlistManager.append(playlistManagerControls);
+//playlistManagerControls.append(createPlaylistButton);
 screen.render();
+*/
