@@ -1,0 +1,35 @@
+{
+	"debug": false,
+	"playlists": [
+		{
+			"name": "Example",
+			"tracks": [
+				{
+					"title": "Short Song",
+					"url": "https://www.youtube.com/watch?v=84qphQWNabg"
+				},
+				{
+					"title": "DJ Shadow - Nobody Speak feat. Run The Jewels (Official Video)",
+					"url": "https://www.youtube.com/watch?v=NUC2EQvdzmY"
+				},
+				{
+					"title": "Miley Cyrus - Wrecking Ball",
+					"url": "https://www.youtube.com/watch?v=My2FRPA3Gf8"
+				}
+			]
+		},
+		{
+			"name": "Chill",
+			"tracks": [
+				{
+					"title": "No Sleep | A Chill Mix",
+					"url": "https://www.youtube.com/watch?v=z3PpphdrEmU"
+				},
+				{
+					"title": "Beautiful Relaxing Chillstep Mix - 3 Hours of Chillstep",
+					"url": "https://www.youtube.com/watch?v=GGY6zizgrYw"
+				}
+			]
+		}
+	]
+}

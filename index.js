@@ -2,13 +2,31 @@
 process.name = 'canticle';
 
 const Canticle = require('./lib/canticle');
+const config = require('config');
 
 const canticle = new Canticle();
+var playlists = config.get('playlists');
 
+
+canticle.on('playlistManagerConsole', (userInput) => {
+    let inputArray = userInput.split(' ');
+    let cmd = inputArray.shift();
+    let params = inputArray.join(' ');
+    canticle.screen.log("cmd: " + cmd);
+    canticle.screen.log("params: " + params);
+    switch(cmd) {
+        case 'add':
+            break;
+        case 'remove':
+            break;
+        default:
+            canticle
+    }
+});
 /*
 const blessed = require('./lib/blessed-canticle');
 const MPlayer = require('mplayer');
-const config = require('config');
+
 
 var playlists = config.get('playlists');
 var selectedPlaylist = 0;
