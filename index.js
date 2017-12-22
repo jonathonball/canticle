@@ -22,6 +22,6 @@ canticle.on('playlistManagerConsole', (userInput) => {
             canticle.playlistManagerRemoveItem(userInput.params);
             break;
         default:
-            canticle.playlistManagerLog.log(userInput.cmd + " command unknown");
+            canticle.plmLog.log(userInput.cmd + " command unknown");
     }
 });
