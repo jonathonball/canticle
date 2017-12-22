@@ -16,12 +16,10 @@ canticle.on('playlistManagerConsole', (userInput) => {
     let translatedCmd = translate.findCommand(userInput.cmd);
     switch (translatedCmd) {
         case 'add':
-            canticle.screen.log('user adding');
-            // TODO validate params
-            canticle.playlistManagerList.addItem(userInput.params);
-            canticle.screen.render();
+            canticle.playlistManagerAddItem(userInput.params);
             break;
         case 'delete':
+            canticle.playlistManagerRemoveItem(userInput.params);
             break;
         default:
             canticle.playlistManagerLog.log(userInput.cmd + " command unknown");
