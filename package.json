@@ -9,6 +9,8 @@
     "blessed": ">=0.1.81",
     "config": "^1.28.1",
     "mplayer": "2.1.0",
+    "sequelize": "^4.28.6",
+    "sqlite3": "^3.1.13",
     "thesaurus": "0.0.0",
     "youtube-dl": "1.12.2"
   }
