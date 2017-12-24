@@ -24,6 +24,15 @@ canticle.on('playlistManagerConsole', (userInput) => {
     }
 });
 
+canticle.on('playlistConsole', (userInput) => {
+    let translatedCmd = translate.findCommand(userInput.cmd);
+    switch(translatedCmd) {
+        default:
+            canticle.plLog.log(userInput.cmd + ' ' + userInput.params);
+    }
+    canticle.screen.render();
+});
+
 storage.on('playlist_add', (playlistName) => {
     if (playlistName.hasOwnProperty('failure')) {
         canticle.plmLog.log('error adding ' + playlistName.playlistName);
