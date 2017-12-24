@@ -29,6 +29,7 @@ storage.on('playlist_add', (playlistName) => {
         canticle.plmLog.log('error adding ' + playlistName.playlistName);
     } else {
         canticle.playlistManagerAddItem(playlistName);
+        canticle.plmLog.log('Playlist ' + playlistName + ' added');
     }
 });
 
@@ -37,6 +38,7 @@ storage.on('playlist_delete', (playlistName) => {
         canticle.plmLog.log('err removing ' + playlistName.playlistName);
     } else {
         canticle.playlistManagerRemoveItem(playlistName);
+        canticle.plmLog.log('Playlist ' + playlistName + ' removed');
     }
 });
 
