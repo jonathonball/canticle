@@ -19,6 +19,9 @@ canticle.on('playlistManagerConsole', (userInput) => {
         case 'delete':
             storage.deletePlaylist(userInput.params);
             break;
+        case 'close':
+            canticle.gtfo();
+            break;
         default:
             canticle.plmLog.log(userInput.cmd + " command unknown");
     }
