@@ -17,7 +17,7 @@ canticle.on('playlistManagerConsole', (userInput) => {
             storage.addPlaylist(userInput.params);
             break;
         case 'delete':
-            canticle.playlistManagerRemoveItem(userInput.params);
+            storage.deletePlaylist(userInput.params);
             break;
         default:
             canticle.plmLog.log(userInput.cmd + " command unknown");
@@ -32,10 +32,22 @@ storage.on('playlist_add', (playlistName) => {
     }
 });
 
+storage.on('playlist_delete', (playlistName) => {
+    if (playlistName.hasOwnProperty('failure')) {
+        canticle.plmLog.log('err removing ' + playlistName.playlistName);
+    } else {
+        canticle.playlistManagerRemoveItem(playlistName);
+    }
+});
+
 storage.on('get_playlists', (playlists) => {
     playlists.forEach((playlist) => {
         canticle.playlistManagerAddItem(playlist.name);
     });
+});
+
+storage.on('storage_log', (msg) => {
+    canticle.screen.log(msg);
 });
 
 storage.getPlaylists();
