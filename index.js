@@ -40,12 +40,7 @@ canticle.on('playlistConsole', (userInput) => {
 });
 
 storage.on('playlist_add', (playlistName) => {
-    if (playlistName.hasOwnProperty('failure')) {
-        canticle.plmLog.log('error adding ' + playlistName.playlistName);
-    } else {
-        canticle.playlistManagerAddItem(playlistName);
-        canticle.plmLog.log('Playlist ' + playlistName + ' added');
-    }
+    canticle.playlistManagerAddItem(playlistName);
 });
 
 storage.on('playlist_delete', (playlistName) => {
@@ -59,7 +54,7 @@ storage.on('playlist_delete', (playlistName) => {
 
 storage.on('get_playlists', (playlists) => {
     playlists.forEach((playlist) => {
-        canticle.playlistManagerAddItem(playlist.name);
+        canticle.playlistManagerAddItem(playlist.name, { backend: true });
     });
 });
 
