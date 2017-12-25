@@ -44,12 +44,7 @@ storage.on('playlist_add', (playlistName) => {
 });
 
 storage.on('playlist_delete', (playlistName) => {
-    if (playlistName.hasOwnProperty('failure')) {
-        canticle.plmLog.log('err removing ' + playlistName.playlistName);
-    } else {
-        canticle.playlistManagerRemoveItem(playlistName);
-        canticle.plmLog.log('Playlist ' + playlistName + ' removed');
-    }
+    canticle.playlistManagerRemoveItem(playlistName);
 });
 
 storage.on('get_playlists', (playlists) => {
@@ -59,7 +54,7 @@ storage.on('get_playlists', (playlists) => {
 });
 
 storage.on('get_playlist', (playlist) => {
-    if (playlist.hasOwnProperty('failure')) {
+    if (playlist.hasOwnProperty('failure') && playlist.failure) {
         canticle.plmLog.log('Could not open playlist ' + playlist.playlistName);
         canticle.screen.render();
     } else {
