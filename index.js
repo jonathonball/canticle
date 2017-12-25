@@ -22,6 +22,9 @@ canticle.on('playlistManagerConsole', (userInput) => {
         case 'close':
             canticle.gtfo();
             break;
+        case 'open':
+            storage.getPlaylist(userInput.params);
+            break;
         default:
             canticle.plmLog.log(userInput.cmd + " command unknown");
     }
@@ -58,6 +61,15 @@ storage.on('get_playlists', (playlists) => {
     playlists.forEach((playlist) => {
         canticle.playlistManagerAddItem(playlist.name);
     });
+});
+
+storage.on('get_playlist', (playlist) => {
+    if (playlist.hasOwnProperty('failure')) {
+        canticle.plmLog.log('Could not open playlist ' + playlist.playlistName);
+        canticle.screen.render();
+    } else {
+        canticle.openPlaylist(playlist);
+    }
 });
 
 storage.on('storage_log', (msg) => {
