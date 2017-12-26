@@ -25,7 +25,18 @@ function playlistCommands(command) {
             storage.getPlaylist(command.params);
             break;
         default:
-            canticle.log.log(command.raw + " command unknown");
+            canticle.log.log('Playlist command "' + command.raw + '" was not understood.');
+    }
+}
+
+function trackCommands(command) {
+    switch(command.verb.name) {
+        case 'add':
+        case 'delete':
+        case 'close':
+        case 'open':
+        default:
+            canticle.log.log('Track command "' + command.raw + '" was not understood.');
     }
 }
 
@@ -41,10 +52,10 @@ canticle.on('console_input', (userInput) => {
             playlistCommands(translatedCmd);
             break;
         case 'track':
-            canticle.log.log('track functions not implemented');
+            trackCommands(translatedCmd);
             break;
         default:
-
+            canticle.log.log('Command "' + command.raw + '" was not understood.');
     }
     canticle.screen.render();
 });
