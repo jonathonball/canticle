@@ -10,7 +10,7 @@ const storage = new Storage();
 const Canticle = require('./lib/canticle');
 const canticle = new Canticle(storage.config.blessedLogFullPath);
 
-canticle.on('playlistManagerConsole', (userInput) => {
+canticle.on('console_input', (userInput) => {
     let translatedCmd = translate.findVerb(userInput.cmd);
     switch (translatedCmd) {
         case 'add':
