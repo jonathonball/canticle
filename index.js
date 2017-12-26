@@ -10,24 +10,43 @@ const storage = new Storage();
 const Canticle = require('./lib/canticle');
 const canticle = new Canticle(storage.config.blessedLogFullPath);
 
-canticle.on('console_input', (userInput) => {
-    let translatedCmd = translate.findVerb(userInput.cmd);
-    switch (translatedCmd) {
+function playlistCommands(command) {
+    switch (command.verb.name) {
         case 'add':
-            storage.addPlaylist(userInput.params);
+            storage.addPlaylist(command.params);
             break;
         case 'delete':
-            storage.deletePlaylist(userInput.params);
+            storage.deletePlaylist(command.params);
             break;
         case 'close':
             canticle.gtfo();
             break;
         case 'open':
-            storage.getPlaylist(userInput.params);
+            storage.getPlaylist(command.params);
             break;
         default:
-            canticle.log.log(userInput.cmd + " command unknown");
+            canticle.log.log(command.raw + " command unknown");
     }
+}
+
+canticle.on('console_input', (userInput) => {
+    let translatedCmd = translate.parseConsoleInput(userInput);
+    // Check for uninary commands
+    if (translatedCmd.verb.name == 'close') {
+        canticle.gtfo();
+    }
+    // Check for fully qualified commands
+    switch (translatedCmd.noun.name) {
+        case 'playlist':
+            playlistCommands(translatedCmd);
+            break;
+        case 'track':
+            canticle.log.log('track functions not implemented');
+            break;
+        default:
+
+    }
+    canticle.screen.render();
 });
 
 storage.on('playlist_add', (playlistName) => {
