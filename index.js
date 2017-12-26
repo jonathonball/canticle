@@ -11,7 +11,7 @@ const Canticle = require('./lib/canticle');
 const canticle = new Canticle(storage.config.blessedLogFullPath);
 
 canticle.on('playlistManagerConsole', (userInput) => {
-    let translatedCmd = translate.findCommand(userInput.cmd);
+    let translatedCmd = translate.findVerb(userInput.cmd);
     switch (translatedCmd) {
         case 'add':
             storage.addPlaylist(userInput.params);
@@ -26,7 +26,7 @@ canticle.on('playlistManagerConsole', (userInput) => {
             storage.getPlaylist(userInput.params);
             break;
         default:
-            canticle.plmLog.log(userInput.cmd + " command unknown");
+            canticle.log.log(userInput.cmd + " command unknown");
     }
 });
 
