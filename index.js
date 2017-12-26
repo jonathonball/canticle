@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 process.name = 'canticle';
 
-const YoutubeInfoGather = require('./lib/youtube-canticle');
-const youtube = new YoutubeInfoGather();
+const ResourceResolver = require('./lib/resource-resolver');
+const resolver = new ResourceResolver();
 const CommandTranslator = require('./lib/command-translation');
 const translate = new CommandTranslator();
 const Storage = require('./lib/storage');
@@ -83,3 +83,5 @@ storage.on('storage_log', (msg) => {
 });
 
 storage.getPlaylists();
+canticle.commandConsoleInput.focus();
+canticle.screen.render();
