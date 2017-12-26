@@ -30,15 +30,6 @@ canticle.on('playlistManagerConsole', (userInput) => {
     }
 });
 
-canticle.on('playlistConsole', (userInput) => {
-    let translatedCmd = translate.findCommand(userInput.cmd);
-    switch(translatedCmd) {
-        default:
-            canticle.plLog.log(userInput.cmd + ' ' + userInput.params);
-    }
-    canticle.screen.render();
-});
-
 storage.on('playlist_add', (playlistName) => {
     canticle.playlistManagerAddItem(playlistName);
 });
@@ -54,12 +45,7 @@ storage.on('get_playlists', (playlists) => {
 });
 
 storage.on('get_playlist', (playlist) => {
-    if (playlist.hasOwnProperty('failure') && playlist.failure) {
-        canticle.plmLog.log('Could not open playlist ' + playlist.playlistName);
-        canticle.screen.render();
-    } else {
-        canticle.openPlaylist(playlist);
-    }
+    canticle.openPlaylist(playlist);
 });
 
 storage.on('storage_log', (msg) => {
