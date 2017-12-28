@@ -122,6 +122,11 @@ resources.on('get_info_add', (info) => {
     storage.addTrack(canticle.loadedPlaylist, info);
 });
 
+canticle.on('start_playback', (track) => {
+    canticle.log.log('Starting playback for ' + track.title);
+    canticle.screen.log(track);
+});
+
 /**
  * Returns a user request to shutdown
  */
