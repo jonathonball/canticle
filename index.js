@@ -126,9 +126,19 @@ resources.on('get_info_add', (info) => {
     storage.addTrack(canticle.loadedPlaylist, info);
 });
 
+/**
+ * Returning a track to start playing
+ */
 canticle.on('start_playback', (track) => {
     canticle.log.log('Starting playback for ' + track.title);
-    canticle.screen.log(track);
+    resources.getInfo(track.youtubeUrl, 'get_info_start');
+});
+
+/**
+ * Returning info for starting playback
+ */
+resources.on('get_info_start', (info) => {
+    mplayer.openFile(info.playerUrl);
 });
 
 /**
