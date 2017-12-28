@@ -2,7 +2,7 @@
 process.name = 'canticle';
 
 const ResourceResolver = require('./lib/resource-resolver');
-const resolver = new ResourceResolver();
+const resources = new ResourceResolver();
 const CommandTranslator = require('./lib/command-translation');
 const translate = new CommandTranslator();
 const Storage = require('./lib/storage');
@@ -32,6 +32,8 @@ function playlistCommands(command) {
 function trackCommands(command) {
     switch(command.verb.name) {
         case 'add':
+            resources.getInfo(command.params, 'get_info_add');
+            break;
         case 'delete':
         case 'close':
         case 'open':
@@ -40,6 +42,9 @@ function trackCommands(command) {
     }
 }
 
+/**
+ * Returning user's input from the console
+ */
 canticle.on('console_input', (userInput) => {
     let translatedCmd = translate.parseConsoleInput(userInput);
     // Check for uninary commands
@@ -55,33 +60,66 @@ canticle.on('console_input', (userInput) => {
             trackCommands(translatedCmd);
             break;
         default:
-            canticle.log.log('Command "' + command.raw + '" was not understood.');
+            canticle.log.log('Command was not understood.');
     }
     canticle.screen.render();
 });
 
+/**
+ * Returning the name of a playlist that was added
+ */
 storage.on('playlist_add', (playlistName) => {
     canticle.playlistManagerAddItem(playlistName);
 });
 
+/**
+ * Returning the name of a deleted playlist
+ */
 storage.on('playlist_delete', (playlistName) => {
     canticle.playlistManagerRemoveItem(playlistName);
 });
 
+/**
+ * Returning a list of playlists for app startup
+ */
 storage.on('get_playlists', (playlists) => {
     playlists.forEach((playlist) => {
         canticle.playlistManagerAddItem(playlist.name, { backend: true });
     });
 });
 
+/**
+ * Returning a playlist that was opened
+ */
 storage.on('get_playlist', (playlist) => {
     canticle.openPlaylist(playlist);
+});
+
+/**
+ * Returning a newly created track
+ */
+storage.on('add_track', (track) => {
+    if (track.hasOwnProperty('failure') && track.failure) {
+        canticle.log.log(track.message);
+    } else {
+        // TODO add new track to playlist
+    }
 });
 
 storage.on('storage_log', (msg) => {
     canticle.screen.log(msg);
 });
 
+/**
+ * Returning info for adding a new track
+ */
+resources.on('get_info_add', (info) => {
+    storage.addTrack(canticle.loadedPlaylist, info);
+});
+
+/**
+ * Everything is loaded, prep user interface
+ */
 storage.getPlaylists();
 canticle.commandConsoleInput.focus();
 canticle.screen.render();
