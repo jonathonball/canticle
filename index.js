@@ -130,6 +130,13 @@ canticle.on('shutdown', () => {
 });
 
 /**
+ * Application is closing.  Make one last attempt to kill mplayer
+ */
+process.on(['exit', 'SIGINT', 'SIGUSR1', 'SIGUSR2', 'uncaughtException'], () => {
+    mplayer.quit()
+});
+
+/**
  * Everything is loaded, prep user interface
  */
 storage.getPlaylists();
