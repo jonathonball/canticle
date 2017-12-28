@@ -99,11 +99,7 @@ storage.on('get_playlist', (playlist) => {
  * Returning a newly created track
  */
 storage.on('add_track', (track) => {
-    if (track.hasOwnProperty('failure') && track.failure) {
-        canticle.log.log(track.message);
-    } else {
-        // TODO add new track to playlist ui
-    }
+    canticle.playlistAddItem(track);
 });
 
 storage.on('storage_log', (msg) => {
