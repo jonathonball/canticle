@@ -9,6 +9,15 @@ const Storage = require('./lib/storage');
 const storage = new Storage();
 const Canticle = require('./lib/canticle');
 const canticle = new Canticle(storage.config.blessedLogFullPath);
+const MPlayer = require('./lib/mplayer');
+const mplayer = new MPlayer();
+
+function shutdown() {
+    canticle.screen.destroy();
+    mplayer.quit();
+    console.log('Goodbye!');
+    process.exit(0);
+}
 
 function playlistCommands(command) {
     switch (command.verb.name) {
@@ -19,7 +28,7 @@ function playlistCommands(command) {
             storage.deletePlaylist(command.params);
             break;
         case 'close':
-            canticle.gtfo();
+            shutdown();
             break;
         case 'open':
             storage.getPlaylist(command.params);
@@ -49,7 +58,7 @@ canticle.on('console_input', (userInput) => {
     let translatedCmd = translate.parseConsoleInput(userInput);
     // Check for uninary commands
     if (translatedCmd.verb.name == 'close') {
-        canticle.gtfo();
+        shutdown();
     }
     // Check for fully qualified commands
     switch (translatedCmd.noun.name) {
@@ -111,6 +120,13 @@ storage.on('storage_log', (msg) => {
  */
 resources.on('get_info_add', (info) => {
     storage.addTrack(canticle.loadedPlaylist, info);
+});
+
+/**
+ * Returns a user request to shutdown
+ */
+canticle.on('shutdown', () => {
+    shutdown();
 });
 
 /**
