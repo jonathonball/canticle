@@ -102,7 +102,7 @@ storage.on('add_track', (track) => {
     if (track.hasOwnProperty('failure') && track.failure) {
         canticle.log.log(track.message);
     } else {
-        // TODO add new track to playlist
+        // TODO add new track to playlist ui
     }
 });
 
