@@ -41,6 +41,8 @@ function playlistCommands(command) {
 function trackCommands(command) {
     switch(command.verb.name) {
         case 'add':
+            canticle.log.log('Adding track...');
+            canticle.screen.render();
             resources.getInfo(command.params, 'get_info_add');
             break;
         case 'delete':
