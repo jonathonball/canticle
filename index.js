@@ -48,6 +48,8 @@ function trackCommands(command) {
         case 'delete':
         case 'close':
         case 'open':
+            canticle.log.log(command.verb.name + " not yet implemented.");
+            break;
         default:
             canticle.log.log('Track command "' + command.raw + '" was not understood.');
     }
@@ -140,7 +142,7 @@ canticle.on('shutdown', () => {
  * Application is closing.  Make one last attempt to kill mplayer
  */
 process.on(['exit', 'SIGINT', 'SIGUSR1', 'SIGUSR2', 'uncaughtException'], () => {
-    mplayer.quit()
+    mplayer.quit();
 });
 
 /**
