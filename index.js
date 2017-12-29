@@ -130,7 +130,6 @@ resources.on('get_info_add', (info) => {
  * Returning a track to start playing
  */
 canticle.on('start_playback', (track) => {
-    canticle.log.log('Starting playback for ' + track.title);
     resources.getInfo(track.youtubeUrl, 'get_info_start');
 });
 
@@ -141,6 +140,13 @@ resources.on('get_info_start', (info) => {
     mplayer.openFile(info.playerUrl);
 });
 
+/**
+ * Mplayer stopped
+ */
+mplayer.on('stop', () => {
+    canticle.nextTrack();
+    canticle.startPlayback();
+});
 /**
  * Returns a user request to shutdown
  */
