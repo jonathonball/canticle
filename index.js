@@ -12,6 +12,9 @@ const canticle = new Canticle(storage.config.blessedLogFullPath);
 const MPlayer = require('./lib/mplayer');
 const mplayer = new MPlayer();
 
+var userPlaybackInterruption = false;
+var userPlayback = false;
+
 function shutdown() {
     canticle.screen.destroy();
     mplayer.quit();
@@ -60,20 +63,30 @@ function trackCommands(command) {
  */
 canticle.on('console_input', (userInput) => {
     let translatedCmd = translate.parseConsoleInput(userInput);
-    // Check for uninary commands
-    if (translatedCmd.verb.name == 'close') {
-        shutdown();
-    }
-    // Check for fully qualified commands
-    switch (translatedCmd.noun.name) {
-        case 'playlist':
-            playlistCommands(translatedCmd);
-            break;
-        case 'track':
-            trackCommands(translatedCmd);
-            break;
-        default:
-            canticle.log.log('Command was not understood.');
+    if (translatedCmd.verb.name && ! translatedCmd.noun.name) {
+        // Check for uninary commands
+        switch(translatedCmd.verb.name) {
+            case 'close':
+                shutdown();
+                break;
+            case 'pause':
+                canticle.pausePlayback(mplayer.status.playing);
+                break;
+            default:
+                canticle.log.log('Command was not understood.');
+        }
+    } else {
+        // Check for fully qualified commands
+        switch (translatedCmd.noun.name) {
+            case 'playlist':
+                playlistCommands(translatedCmd);
+                break;
+            case 'track':
+                trackCommands(translatedCmd);
+                break;
+            default:
+                canticle.log.log('Command was not understood.');
+        }
     }
     canticle.screen.render();
 });
@@ -127,17 +140,32 @@ resources.on('get_info_add', (info) => {
 });
 
 /**
- * Returning a track to start playing
+ * Returning a user request to start playing
  */
 canticle.on('start_playback', (track) => {
     resources.getInfo(track.youtubeUrl, 'get_info_start');
 });
 
 /**
+ * Returning a user request to pause
+ */
+canticle.on('pause_playback', () => {
+    mplayer.pause();
+});
+
+/**
+ * Returning a user request to pause
+ */
+canticle.on('resume_playback', () => {
+    mplayer.play();
+});
+
+/**
  * Returning info for starting playback
  */
 resources.on('get_info_start', (info) => {
-    mplayer.openFile(info.playerUrl);
+    mplayer.load(info.playerUrl);
+    canticle.screen.render();
 });
 
 /**
