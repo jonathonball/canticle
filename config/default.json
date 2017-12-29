@@ -1,0 +1,9 @@
+{
+	"debug": false,
+    "database": {
+        "dialect": "sqlite",
+        "storagePath": "/home/jball/.config/canticle",
+        "storageFile": "canticle.sql"
+    },
+    "blessedLogFullPath": "/home/jball/Dropbox/dev/canticle/garbage/blessed.log"
+}

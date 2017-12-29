@@ -1,0 +1,17 @@
+{
+  "name": "canticle",
+  "version": "0.0.1",
+  "description": "command line youtube playlist manager",
+  "main": "index.js",
+  "author": "Jonathon Ball",
+  "repositiory": "https://github.com/jonathonball/canticle",
+  "dependencies": {
+    "blessed": ">=0.1.81",
+    "config": "^1.28.1",
+    "mplayer": "2.1.0",
+    "sequelize": "^4.28.6",
+    "sqlite3": "^3.1.13",
+    "youtube-dl": "1.12.2",
+    "valid-url": "1.0.9"
+  }
+}
