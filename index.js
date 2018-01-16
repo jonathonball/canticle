@@ -161,7 +161,7 @@ canticle.on('pause_playback', () => {
  * Returning a user request to pause
  */
 canticle.on('resume_playback', () => {
-    mplayer.play();
+    mplayer.unpause();
 });
 
 /**
