@@ -9,6 +9,7 @@ const Storage = require('./lib/storage');
 const storage = new Storage();
 const Canticle = require('./lib/canticle');
 const canticle = new Canticle(storage.config.blessedLogFullPath);
+
 const MPlayer = require('./lib/mplayer');
 const mplayer = new MPlayer();
 
@@ -70,7 +71,7 @@ canticle.on('console_input', (userInput) => {
                 shutdown();
                 break;
             case 'pause':
-                canticle.pausePlayback(mplayer.status.playing);
+                canticle.togglePause(mplayer.status.playing);
                 break;
             default:
                 canticle.log.log('Command was not understood.');
@@ -164,7 +165,8 @@ canticle.on('resume_playback', () => {
  * Returning info for starting playback
  */
 resources.on('get_info_start', (info) => {
-    mplayer.load(info.playerUrl);
+    userPlaybackInterruption = true;
+    mplayer.openFile(info.playerUrl);
     canticle.screen.render();
 });
 
@@ -172,8 +174,13 @@ resources.on('get_info_start', (info) => {
  * Mplayer stopped
  */
 mplayer.on('stop', () => {
-    canticle.nextTrack();
-    canticle.startPlayback();
+    canticle.log.log('stop event triggered');
+    if (userPlaybackInterruption) {
+        userPlaybackInterruption = false;
+    } else {
+        canticle.nextTrack();
+        canticle.startPlayback();
+    }
 });
 /**
  * Returns a user request to shutdown
