@@ -10,8 +10,11 @@ const storage = new Storage();
 const Canticle = require('./lib/canticle');
 const canticle = new Canticle(storage.config.blessedLogFullPath);
 
-const MPlayer = require('./lib/mplayer');
-const mplayer = new MPlayer();
+//const MPlayer = require('./lib/mplayer');
+//const mplayer = new MPlayer();
+
+const Player = require('./lib/player.js');
+const mplayer = new Player();
 
 var userPlaybackInterruption = false;
 var userPlayback = false;
@@ -166,21 +169,25 @@ canticle.on('resume_playback', () => {
  */
 resources.on('get_info_start', (info) => {
     userPlaybackInterruption = true;
-    mplayer.openFile(info.playerUrl);
+    mplayer.open(info.playerUrl);
     canticle.screen.render();
 });
 
 /**
  * Mplayer stopped
  */
-mplayer.on('stop', () => {
+mplayer.on('stop', (method) => {
     canticle.log.log('stop event triggered');
+    canticle.log.log(method);
+    //switch()
+    /*
     if (userPlaybackInterruption) {
         userPlaybackInterruption = false;
     } else {
         canticle.nextTrack();
         canticle.startPlayback();
     }
+    */
 });
 /**
  * Returns a user request to shutdown
