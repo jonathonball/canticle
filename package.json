@@ -1,0 +1,14 @@
+{
+  "name": "canticle2",
+  "version": "0.0.1",
+  "description": "Command line music application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jonathon Ball",
+  "license": "MIT",
+  "dependencies": {
+    "blessed": "^0.1.81"
+  }
+}
