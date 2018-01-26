@@ -1,5 +1,5 @@
 {
-  "main": "index.js",
+  "main": "player.js",
   "author": "Jonathon Ball",
   "license": "MIT"
 }
