@@ -1,5 +1,5 @@
 {
-  "main": "index.js",
+  "main": "user_interface.js",
   "author": "Jonathon Ball",
   "license": "MIT"
 }
