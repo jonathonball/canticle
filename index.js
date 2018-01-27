@@ -1,9 +1,12 @@
 const UserInterface = require('./lib/user_interface');
-const CommandTranslator = require('./lib/command_translator');
+const Storage = require('./lib/storage');
 
-var userInterface = new UserInterface();
-var commandTranslator = new CommandTranslator();
+var storage = new Storage();
 
-userInterface.on('shutdown', () => {
-    console.log('Goodbye!');
+storage.on('ready', () => {
+    var userInterface = new UserInterface();
+
+    userInterface.on('shutdown', () => {
+        console.log('Goodbye!');
+    });
 });
