@@ -9,6 +9,7 @@ storage.on('ready', (playlists) => {
     userInterface.playlistManager.addPlaylists(playlists);
 
     userInterface.on('shutdown', () => {
+        userInterface.screen.destroy();
         console.log('Goodbye!');
     });
 });
