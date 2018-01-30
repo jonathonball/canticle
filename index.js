@@ -13,7 +13,7 @@ storage.on('ready', (playlists) => {
         userInterface.playlistManager.addPlaylist(playlist);
     });
 
-    userInterface.on('shutdown', () => {
+    userInterface.on('command_shutdown', () => {
         userInterface.screen.destroy();
         console.log('Goodbye!');
     });
