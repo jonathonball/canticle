@@ -3,10 +3,8 @@ const Storage = require('./lib/storage');
 
 var storage = new Storage();
 
-storage.on('ready', (playlists) => {
+storage.on('ready', (initialPlaylists) => {
     var userInterface = new UserInterface();
-    userInterface.log.log('Welcome to Canticle.');
-    userInterface.playlistManager.addPlaylists(playlists);
 
     userInterface.on('command_add_playlist', (name) => {
         let addPlaylistQuery = storage.Playlist.create({ name: name });
@@ -18,8 +16,22 @@ storage.on('ready', (playlists) => {
         userInterface.playlistManager.deletePlaylist(deletePlaylistQuery, name);
     });
 
+    userInterface.on('command_open_playlist', (name) => {
+        let playlist = userInterface.playlistManager.getPlaylist(name);
+        if (playlist) {
+            userInterface.playlistManager.select(playlist.name);
+            userInterface.playlist.addTracks(playlist);
+        } else {
+            userInterface.log.log('Error loading playlist ' + name);
+        }
+    });
+
     userInterface.on('command_close', () => {
         userInterface.screen.destroy();
         console.log('Goodbye!');
     });
+
+    userInterface.log.log('Welcome to Canticle.');
+    userInterface.playlistManager.addPlaylists(initialPlaylists);
+    userInterface.commandConsole.focus();
 });
