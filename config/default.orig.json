@@ -1,8 +1,0 @@
-{
-	"debug": false,
-    "database": {
-        "dialect": "sqlite",
-        "storagePath": "/home/jball/.config/canticle",
-        "storageFile": "canticle.sql"
-    }
-}
