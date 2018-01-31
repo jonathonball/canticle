@@ -54,8 +54,9 @@ storage.on('ready', (initialPlaylists) => {
         if (userInterface.playlist.isLoaded() && playlist) {
             userInterface.log.log('Loading ' + playlist.title);
             YouTubeDl.getInfo(playlist.url, (err, info) => {
-                userInterface.log.log('this is where we would play');
-                userInterface.log.log(info.url);
+                let audioStreams = info.formats.filter(({vcodec}) => vcodec == 'none');
+                userInterface.player.duration = info.duration;
+                userInterface.player.open(audioStreams[0].url);
                 userInterface.screen.render();
             });
         } else {
@@ -65,6 +66,7 @@ storage.on('ready', (initialPlaylists) => {
 
     userInterface.on('command_close', () => {
         userInterface.screen.destroy();
+        userInterface.player.quit();
         console.log('Goodbye!');
     });
 
