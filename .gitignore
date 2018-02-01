@@ -58,3 +58,7 @@ typings/
 .env
 
 garbage/
+
+canticle.sql
+seed.sql
+
