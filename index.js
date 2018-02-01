@@ -6,6 +6,10 @@ var storage = new Storage();
 storage.on('ready', (initialPlaylists) => {
     var userInterface = new UserInterface(storage);
 
+    storage.on('log', (message) => {
+        userInterface.screen.log(message);
+    });
+
     userInterface.on('shutdown', () => {
         console.log('Goodbye!');
     });
