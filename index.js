@@ -18,5 +18,5 @@ storage.on('ready', (initialPlaylists) => {
         userInterface.shutdown();
     });
 
-    userInterface.playlistManager.addPlaylists(initialPlaylists);
+    userInterface.playlistManager.initialize();
 });
