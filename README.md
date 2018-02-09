@@ -4,6 +4,8 @@ Canticle is a command-line music streaming application.  It uses [Blessed](http:
 # NOTICE
 This application has not reached a release milestone.  I don't think you should use it yet.
 
+![demo gif](https://i.imgur.com/252VjQR.gif "Canticle in action")
+
 ## Features
 * Create and manage playlists of on-line videos
 * Audio playback that iterates through the current playlist
