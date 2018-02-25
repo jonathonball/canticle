@@ -1,6 +1,6 @@
 {
   "name": "canticle2",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Command line music application",
   "main": "index.js",
   "scripts": {
