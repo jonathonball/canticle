@@ -1,5 +1,9 @@
 const UserInterface = require('./lib/user_interface');
 const Storage = require('./lib/storage');
+const Yargs = require('yargs')
+                .help('h')
+                .alias('h', 'help')
+                .argv;
 
 var storage = new Storage();
 
