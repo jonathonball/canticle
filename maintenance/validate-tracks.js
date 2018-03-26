@@ -7,12 +7,19 @@ const yargs = require('yargs')
         alias: 'p',
         describe: 'A playlist name'
     })
+    .option('verbose', {
+        alias: 'v',
+        type: 'boolean',
+        describe: 'Also include tracks that pass validation'
+    })
     .demandOption(['playlist'])
     .argv;
 
 JobManager.on('finish', function(job, worker) {
-    if (! worker.result.pass) {
-        console.log(worker.result.track.title + ' has no streams');
+    if (worker.result.pass) {
+        console.log('[pass] ' + worker.result.track.title);
+    } else {
+        console.log('[fail] ' + worker.result.track.title + ' has no streams');
     }
 });
 
