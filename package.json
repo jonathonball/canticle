@@ -11,6 +11,7 @@
   "dependencies": {
     "blessed": "^0.1.81",
     "config": "^1.29.4",
+    "neuron": "^0.4.7",
     "sequelize": "^4.32.2",
     "sqlite3": "^3.1.13",
     "valid-url": "^1.0.9",
