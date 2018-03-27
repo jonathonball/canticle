@@ -48,11 +48,7 @@ storage.db.sync().then(() => {
             console.log('Playlist not found.');
             process.exit(1);
         }
-        playlists.rows[0].getTracks().then((tracks) => {
-            console.log('Checking ' + tracks.length + ' tracks this may take some time.');
-            tracks.forEach((track) => {
-                storage.JobManager.enqueue('validateUrl', track);
-            });
-        });
+        console.log('This may take some time.');
+        playlists.rows[0].validateTracks(storage.JobManager);
     });
 });
