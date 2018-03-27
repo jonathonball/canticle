@@ -1,6 +1,5 @@
 const Storage = require('./../lib/storage/storage');
 const storage = new Storage();
-const JobManager = require('./../lib/neuron.js');
 
 const yargs = require('yargs')
     .option('playlist', {
@@ -19,7 +18,7 @@ const yargs = require('yargs')
     .demandOption(['playlist'])
     .argv;
 
-JobManager.on('finish', function(job, worker) {
+storage.JobManager.on('finish', function(job, worker) {
     if (worker.result.pass) {
         if (yargs.verbose) {
             console.log('[pass] ' + worker.result.track.title);
@@ -52,7 +51,7 @@ storage.db.sync().then(() => {
         playlists.rows[0].getTracks().then((tracks) => {
             console.log('Checking ' + tracks.length + ' tracks this may take some time.');
             tracks.forEach((track) => {
-                JobManager.enqueue('validateUrl', track);
+                storage.JobManager.enqueue('validateUrl', track);
             });
         });
     });
