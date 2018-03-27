@@ -12,14 +12,27 @@ const yargs = require('yargs')
         type: 'boolean',
         describe: 'Also include tracks that pass validation'
     })
+    .option('prune', {
+        type: 'boolean',
+        describe: 'Remove tracks that fail validation'
+    })
     .demandOption(['playlist'])
     .argv;
 
 JobManager.on('finish', function(job, worker) {
     if (worker.result.pass) {
-        console.log('[pass] ' + worker.result.track.title);
+        if (yargs.verbose) {
+            console.log('[pass] ' + worker.result.track.title);
+        }
     } else {
         console.log('[fail] ' + worker.result.track.title + ' has no streams');
+        if (yargs.prune) {
+            let title = worker.result.track.title;
+            worker.result.track.destroy().then(() => {
+                console.log('[info] ' + title + ' deleted');
+                return null;
+            });
+        }
     }
 });
 
