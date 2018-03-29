@@ -36,7 +36,7 @@ storage.JobManager.on('finish', function(job, worker) {
 });
 
 storage.db.sync().then(() => {
-    storage.Playlist.findByName(yargs.playlist).then((playlists) => {
+    storage.Playlist.findAllByName(yargs.playlist).then((playlists) => {
         if (playlists.count > 1) {
             console.log('Playlist name is ambiguous.  Did you mean?');
             console.log(playlists.rows.map(({name}) => name));
