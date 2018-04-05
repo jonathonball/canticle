@@ -7,6 +7,11 @@ const yargs = require('yargs')
                     type: 'string',
                     nargs: 1
                 })
+                .option('autoplay', {
+                    alias: 'a',
+                    describe: 'Automatically start playback',
+                    type: 'boolean'
+                })
                 .help('h')
                 .alias('h', 'help')
                 .argv;
