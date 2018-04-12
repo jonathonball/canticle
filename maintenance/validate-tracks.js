@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const Storage = require('./../lib/storage/storage');
 const storage = new Storage();
 
@@ -36,17 +38,10 @@ storage.JobManager.on('finish', function(job, worker) {
 });
 
 storage.db.sync().then(() => {
-    storage.Playlist.findAllByName(yargs.playlist).then((playlists) => {
-        if (playlists.count > 1) {
-            console.log('Playlist name is ambiguous.  Did you mean?');
-            console.log(playlists.rows.map(({name}) => name));
-            process.exit(1);
-        }
-        if (playlists.count < 1) {
-            console.log('Playlist not found.');
-            process.exit(1);
-        }
+    storage.Playlist.findByName(yargs.playlist).then((playlist) => {
         console.log('This may take some time.');
-        playlists.rows[0].validateTracks(storage.JobManager);
+        playlist.validateTracks(storage.JobManager);
+    }).catch((err) => {
+        console.log(err.message);
     });
 });
