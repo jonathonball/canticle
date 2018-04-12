@@ -6,6 +6,7 @@ const YouTubeDL = require('youtube-dl');
 const ValidUrl = require('valid-url');
 
 const yargs = require('yargs')
+    .usage('Import existing playlist.')
     .option('url', {
         alias: 'u',
         describe: 'A url containing a playlist'
