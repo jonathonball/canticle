@@ -21,7 +21,7 @@ const yargs = require('yargs')
     .argv;
 
 storage.db.sync().then(() => {
-    storage.Playlist.findByName(yargs.playlist).then((playlist) => {
+    storage.Playlist.findOrCreateByName(yargs.playlist).then((playlist) => {
         YouTubeDL.getInfo(yargs.url, ['--flat-playlist'], (err, results) => {
             results.forEach((result) => {
                 storage.Track.create({
