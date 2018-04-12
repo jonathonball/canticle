@@ -17,9 +17,9 @@ This application has not reached a release milestone.  I don't think you should 
   * `validate playlist example`
 * User specific options can be set in `~/.config/canticle/*.json`.
 * Neuron now available in the backend for handling large batch jobs.
+* Ability to import existing public YouTube playlists.
 
 ## Coming Soon
-* Ability to import existing public YouTube playlists.
 * Interactive `help` command
 * Add tracks to playlists via CLI
 * `dj` command for quickly starting playback
