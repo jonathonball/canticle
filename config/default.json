@@ -1,4 +1,5 @@
 {
     "greeting": "Welcome to Canticle",
-    "playlist": null
+    "playlist": null,
+    "titleScrollInterval": 1000
 }
