@@ -1,8 +1,8 @@
 {
   "name": "canticle",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "CLI music streaming app using Blessed",
-  "main": "index.js",
+  "main": "canticle.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,6 +11,7 @@
   "dependencies": {
     "blessed": "^0.1.81",
     "config": "^1.29.4",
+    "neuron": "^0.4.7",
     "sequelize": "^4.32.2",
     "sqlite3": "^3.1.13",
     "valid-url": "^1.0.9",

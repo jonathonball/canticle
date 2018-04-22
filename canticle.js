@@ -1,11 +1,23 @@
+#!/usr/bin/env node
 const UserInterface = require('./lib/user_interface');
 const Storage = require('./lib/storage');
-const Yargs = require('yargs')
+const yargs = require('yargs')
+                .option('playlist', {
+                    alias: 'p',
+                    describe: 'Playlist to load',
+                    type: 'string',
+                    nargs: 1
+                })
+                .option('autoplay', {
+                    alias: 'a',
+                    describe: 'Automatically start playback',
+                    type: 'boolean'
+                })
                 .help('h')
                 .alias('h', 'help')
                 .argv;
 
-var storage = new Storage();
+var storage = new Storage(yargs);
 
 storage.on('ready', (initialPlaylists) => {
     var userInterface = new UserInterface(storage);
@@ -22,5 +34,5 @@ storage.on('ready', (initialPlaylists) => {
         userInterface.shutdown();
     });
 
-    userInterface.playlistManager.initialize();
+    userInterface.processAutoloads();
 });
