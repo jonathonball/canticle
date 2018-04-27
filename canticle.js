@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const UserInterface = require('./lib/user_interface');
 const Storage = require('./lib/storage');
 const yargs = require('yargs')

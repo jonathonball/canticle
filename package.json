@@ -1,8 +1,8 @@
 {
   "name": "canticle",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "CLI music streaming app using Blessed",
-  "main": "index.js",
+  "main": "canticle.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
