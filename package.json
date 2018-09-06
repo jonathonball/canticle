@@ -10,12 +10,12 @@
   "license": "MIT",
   "dependencies": {
     "blessed": "^0.1.81",
-    "config": "^1.29.4",
+    "config": "^1.31.0",
     "neuron": "^0.4.7",
-    "sequelize": "^4.32.2",
+    "sequelize": "^4.38.0",
     "sqlite3": "^3.1.13",
     "valid-url": "^1.0.9",
-    "yargs": "^11.0.0",
+    "yargs": "^11.1.0",
     "youtube-dl": "^1.12.2"
   }
 }
