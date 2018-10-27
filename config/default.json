@@ -3,5 +3,6 @@
     "playlist": null,
     "titleScrollInterval": 1000,
     "trashFolderName": "trash",
-    "databaseFilename": null
+    "databaseFilename": null,
+    "logging": false
 }
