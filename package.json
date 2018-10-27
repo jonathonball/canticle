@@ -1,6 +1,6 @@
 {
   "name": "canticle",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "CLI music streaming app using Blessed",
   "main": "canticle.js",
   "scripts": {
@@ -28,6 +28,6 @@
     "youtube-dl": "^1.12.2"
   },
   "bin": {
-      "canticle": "canticle.js"
+    "canticle": "canticle.js"
   }
 }
