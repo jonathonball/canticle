@@ -1,8 +1,11 @@
 # Canticle
-Canticle is a command-line music streaming application.  It uses [Blessed](http://blessedjs.org/) as front-end for [youtube-dl](https://rg3.github.io/youtube-dl/) and [mplayer](http://www.mplayerhq.hu/design7/news.html).  Canticle is designed for streaming only and does not download media for off-line playback.  
+Canticle is a command-line music/audio streaming application.  It uses [Blessed](http://blessedjs.org/) as front-end for [youtube-dl](https://rg3.github.io/youtube-dl/) and [mplayer](http://www.mplayerhq.hu/design7/news.html).  Canticle is designed for streaming only and does not download media for off-line playback.
 
 # NOTICE
-This application has not reached a release milestone.  I don't think you should use it yet.
+This software uses the MIT License.
+
+# Development Status `PRE-RELEASE`
+Canticle has served me well for a good stretch of time even though I neglect doing work to improve it.  If I were to put forth the effort to finish cleaning it up, it might even be something nice.  Not sure if that'll ever happen.  Occasionally dependencies will break this app; be patient, sometimes these things work themselves out.
 
 ## Features
 * Uses the entire terminal window to provide a friendly user interface.
@@ -13,20 +16,26 @@ This application has not reached a release milestone.  I don't think you should 
 * Keyboard shortcuts for controlling in-app volume. (0.0.3)
 * User specific options can be set in `~/.config/canticle/*.json`. (0.0.3)
 * Keyboard shortcuts for controlling playback. (0.0.3)
-
-## What's New (0.0.4)
-* Command to validate that existing tracks in a playlist have valid streams.
-  * Example: `validate playlist example`
-  * Maintenence script can optionally prune invalid tracks
-* Ability to import existing public YouTube playlists
-* `dj` and `autoplay` commands for quickly starting playback
-* Add tracks to playlists via CLI
-* WinAMP style title scroll in the Now Playing widget
-* Keyboard shortcuts for navigating playlist
+* (0.0.4) Command to validate that existing tracks in a playlist have valid streams.
+* (0.0.4) Example: `validate playlist example`
+* (0.0.4) Maintenence script can optionally prune invalid tracks
+* (0.0.4) Ability to import existing public YouTube playlists
+* (0.0.4) `dj` and `autoplay` commands for quickly starting playback
+* (0.0.4) Add tracks to playlists via CLI
+* (0.0.4) WinAMP style title scroll in the Now Playing widget
+* (0.0.4) Keyboard shortcuts for navigating playlist
   * `PgUp` Select first track in playlist
   * `PgDn` Select last track in playlist
   * `Home` Move playlist selection up the number of visible tracks
   * `End` Move playlist selection down the number of visible tracks
+
+## What's New (0.0.5)
+  * Published on yarn
+  * Switched to yarn for development
+  * File logging path can be set in user config under `logging`
+    * Default `false`
+  * Database file path can be set in user config
+    * Default `/home/$USER/.config/canticle/database.sql`
 
 ## Coming Soon
 * Interactive `help` command
@@ -45,10 +54,10 @@ This application has not reached a release milestone.  I don't think you should 
 * mplayer
 * sqlite3
 
-## Installation
-* `$ git clone https://github.com/jonathonball/canticle.git`
-* `$ cd canticle`
-* `$ npm install`
+## Installation (Ubuntu 18.04)
+* `sudo apt install mplayer`
+* `yarn global add canticle`
+* If it isn't already you'll need to put your yarn global bin in your `$PATH`.
 
 ## Usage
 Though there is some mouse support, Canticle is primarily controlled by text commands.
@@ -86,4 +95,3 @@ Inspired by [mps-youtube](https://github.com/mps-youtube/mps-youtube)
 
 ## License
 * MIT
-
