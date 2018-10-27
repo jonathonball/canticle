@@ -6,7 +6,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Jonathon Ball",
+  "keywords": [
+    "music",
+    "streaming",
+    "CLI"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:jonathonball/canticle.git"
+  },
+  "author": "Jonathon Ball <jonathon.ball@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "blessed": "^0.1.81",
@@ -17,5 +26,8 @@
     "valid-url": "^1.0.9",
     "yargs": "^11.1.0",
     "youtube-dl": "^1.12.2"
+  },
+  "bin": {
+      "canticle": "canticle.js"
   }
 }
