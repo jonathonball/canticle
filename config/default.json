@@ -1,5 +1,8 @@
 {
     "greeting": "Welcome to Canticle",
     "playlist": null,
-    "titleScrollInterval": 1000
+    "titleScrollInterval": 1000,
+    "trashFolderName": "trash",
+    "databaseFilename": null,
+    "logging": false
 }
