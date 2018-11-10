@@ -4,6 +4,7 @@
   "description": "CLI music streaming app using Blessed",
   "main": "canticle.js",
   "scripts": {
+    "jshint": "node_modules/jshint/bin/jshint -c .jshintrc --exclude-path .gitignore .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -29,5 +30,8 @@
   },
   "bin": {
     "canticle": "canticle.js"
+  },
+  "devDependencies": {
+    "jshint": "^2.9.6"
   }
 }
