@@ -32,6 +32,10 @@
     "canticle": "canticle.js"
   },
   "devDependencies": {
-    "jshint": "^2.9.6"
-  }
+    "jshint": "^2.9.6",
+    "pre-commit": "^1.2.2"
+  },
+  "pre-commit": [
+    "jshint"
+  ]
 }
